@@ -1,8 +1,4 @@
-﻿using ReplacWords.Lib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ReplacWords.Lib
@@ -10,37 +6,95 @@ namespace ReplacWords.Lib
     public class Replace
     {
         //с-во, присваивается слово которое изменяем 
-        public string Word { get; set; }
+        public string Line { get; set; }
 
-        //конструктор по умолчанию
-        public Replace() { }
+        private Dictionary<string, string> _word;
+        public int NumberOfSubstitutions { get; set; }
 
         //конструктор с параметрами
-        public Replace(string word) => Word = word;
-
-        //метод изменяет слово на ****
-        public void ReplacementWord()
+        public Replace(string[] line)
         {
-            if (Word is not null && Word != "")
-            {
-                int size = Word.Length;
-                Word = "";
+            _word = new Dictionary<string, string>();
+            NumberOfSubstitutions = 0;
 
-                for (int i = 0; i < size; i++)
+            foreach (var l in line)
+            {
+                string temp = "";
+                for (int i = 0; i < l.Length; i++)
                 {
-                    Word += "*";
+                    temp += "*";
+                }
+                _word.Add(l, temp);
+            }
+        }
+
+        public Replace(string[] word, string line)
+        {
+            _word = new Dictionary<string, string>();
+            NumberOfSubstitutions = 0;
+            Line = line;
+
+            foreach (var l in word)
+            {
+                string temp = "";
+                for (int i = 0; i < l.Length; i++)
+                {
+                    temp += "*";
+                }
+                _word.Add(l, temp);
+            }
+        }
+
+        //метод изменяет слово на **** без параметров
+        public string ReplacementWord()
+        {
+            string tempLine = Line;
+            if (!string.IsNullOrEmpty(Line))
+            {
+                foreach (var w in _word)
+                {
+                    Line = Line.Replace(w.Key, w.Value);
+                    if (string.Equals(tempLine, Line))
+                    {
+                        NumberOfSubstitutions++;
+                        tempLine = Line;
+                    }
                 }
             }
-
+            return Line;
         }
 
-        //асинхронный метод изменения слова
-        public async Task ReplacementWordAsync()
+        //метод изменяет слово на **** с параметрами
+        public string ReplacementWord(string line)
         {
-            await Task.Run(() => ReplacementWord());
+            string tempLine = line;
+            if (!string.IsNullOrEmpty(line))
+            {
+                foreach (var w in _word)
+                {
+                    line = line.Replace(w.Key, w.Value);
+                    if (string.Equals(tempLine, line))
+                    {
+                        NumberOfSubstitutions++;
+                        tempLine = line;
+                    }
+                }
+            }
+            return line;
         }
 
-        //так для разнообразия
-        public override string ToString() => $"{Word}";
+        //асинхронный метод изменения слова без параметра
+        public async ValueTask<string> ReplacementWordAsync()
+        {
+            return await Task.Run(() => ReplacementWord());
+        }
+
+        //асинхронный метод изменения слова c параметрами
+        public async ValueTask<string> ReplacementWordAsync(string line)
+        {
+            return await Task.Run(() => ReplacementWord(line));
+        }
+
+
     }
 }
