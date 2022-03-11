@@ -5,6 +5,8 @@ VisualStudioVersion = 17.2.32210.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplacWords.Lib", "ReplacWords.Lib\ReplacWords.Lib.csproj", "{3C316231-3B47-4743-9508-058F9B03C3F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplaceWords.Test", "ReplaceWords.Test\ReplaceWords.Test.csproj", "{34334F3B-F83C-47B2-A0D1-19C4369E1E28}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{3C316231-3B47-4743-9508-058F9B03C3F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C316231-3B47-4743-9508-058F9B03C3F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C316231-3B47-4743-9508-058F9B03C3F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34334F3B-F83C-47B2-A0D1-19C4369E1E28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34334F3B-F83C-47B2-A0D1-19C4369E1E28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34334F3B-F83C-47B2-A0D1-19C4369E1E28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34334F3B-F83C-47B2-A0D1-19C4369E1E28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
