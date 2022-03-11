@@ -18,7 +18,7 @@ namespace ReplacWords.Lib
                 
                 for (int i = 0; i < bannedWordFile.Length; i++)
                 {
-                    await sw.WriteLineAsync($"Размер файла №{i + 1}: {bannedWordFile[i].Length}");
+                    await sw.WriteLineAsync($"Размер файла №{i + 1}: {new FileInfo(bannedWordFile[i]).Length}");
                     await sw.WriteLineAsync($"Путь файла №{i + 1}: {Path.GetFullPath(bannedWordFile[i])}");
                 }
 
