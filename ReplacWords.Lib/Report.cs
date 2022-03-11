@@ -6,28 +6,36 @@ namespace ReplacWords.Lib
 {
     public class Report
     {
-        Report(){ }
-        
         //Путь к папке с файлами найденных слов
         static string pathDir = "";
+        
+        Report(string _path)
+        {
+            pathDir = _path;
+        }
         
         //Массив файлов найденных слов в папке
         string[] bannedWordFile = Directory.GetFiles(pathDir, "*.txt");
         
         //Запись информации в файл
-        public async Task WriteInfoToFile(string filePath)
+        public async Task WriteInfoToFile(string[] bannedWordFile)
         {
             //Путь к файлу для записи информации
             string pathForWrite = @"D:\!Desktop\Step\C#\Projects\ReplacWords\file_report.txt";
 
-            for (int i = 0; i < bannedWordFile.Length; i++)
+            using (StreamWriter sw = new StreamWriter(pathForWrite, true))
             {
-                using (StreamWriter sw = new StreamWriter(pathForWrite, true))
+                int CountAll = 0;
+                
+                for (int i = 0; i < bannedWordFile.Length; i++)
                 {
-                    await sw.WriteLineAsync($"Путь файла: {Path.GetFullPath(filePath)}");
-                    await sw.WriteLineAsync($"Размер файла: {filePath.Length}");
-                    await sw.WriteLineAsync("Количество замен: "+ CountForbiddenWords(filePath));
+                    await sw.WriteLineAsync($"Путь файла №{i + 1}: {Path.GetFullPath(bannedWordFile[i])}");
+                    await sw.WriteLineAsync($"Размер файла №{i + 1}: {bannedWordFile[i].Length}");
+                    await sw.WriteLineAsync("Количество замен в файле №" + i + 1 + ":" + CountForbiddenWords(bannedWordFile[i]));
+                    CountAll += CountForbiddenWords(bannedWordFile[i]);
                 }
+
+                await sw.WriteLineAsync($"Общее колличество найденных файлов: {CountAll}");
             }
         }
         
