@@ -14,7 +14,7 @@ namespace ReplacWords.Lib
         public static string[] filesExtensions; //список расширений файлов, которые будут проверяться
         public string docsPath;
         public string controlFolder;
-        public static string[] ArrBannedWordFile; //for @KirillLagutin
+        public string[] ArrBannedWordFile; //for @KirillLagutin
         
         public Search(string NewDocsPath) 
         {            
