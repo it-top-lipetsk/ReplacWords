@@ -1,95 +1,134 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ReplacWords.Lib
 {
     public class Replace
     {
-        //с-во, присваивается слово которое изменяем 
+
+        /// <summary>
+        /// с-во строка
+        /// </summary>
         public string Line { get; set; }
-
+        /// <summary>
+        /// словарь запрещенных слов
+        /// </summary>
         private Dictionary<string, string> _word;
-        public static int NumberOfSubstitutions { get; set; }
+      
+        /// <summary>
+        /// счетчик измененых слов
+        /// </summary>
+        public int NumberOfSubstitutions { get; set; }
 
-        //конструктор с параметрами
-        public Replace(string[] line)
+        /// <summary>
+        /// конструктор с параметрами
+        /// </summary>
+        /// <param name="word">массив запрещенных слов</param>
+        public Replace(string[] word)
         {
-            _word = new Dictionary<string, string>();
+            FillInDictionary(word);
             NumberOfSubstitutions = 0;
-
-            foreach (var l in line)
-            {
-                string temp = "";
-                for (int i = 0; i < l.Length; i++)
-                {
-                    temp += "*";
-                }
-                _word.Add(l, temp);
-            }
+            Line = "";
         }
-
+        /// <summary>
+        /// конструктор с параметрами
+        /// </summary>
+        /// <param name="word">массив запрещенных слов</param>
+        /// <param name="line">строка</param>
         public Replace(string[] word, string line)
         {
-            _word = new Dictionary<string, string>();
+            FillInDictionary(word);
             NumberOfSubstitutions = 0;
             Line = line;
+        }
 
-            foreach (var l in word)
+        /// <summary>
+        /// метод заполнения словаря
+        /// </summary>
+        /// <param name="word">массив запрещенных слов</param>
+        private void FillInDictionary(string[] word)
+        {
+
+            _word = new Dictionary<string, string>();
+
+            foreach (var w in word)
             {
                 string temp = "";
-                for (int i = 0; i < l.Length; i++)
+                for (int i = 0; i < w.Length; i++)
                 {
                     temp += "*";
                 }
-                _word.Add(l, temp);
+                _word.Add(w, temp);
             }
         }
 
-        //метод изменяет слово на **** без параметров
+        /// <summary>
+        /// метод замены запрещенных слов на звездочки
+        /// </summary>
+        /// <returns>измененную строку</returns>
         public string ReplacementWord()
         {
-            string tempLine = Line;
+            bool ignoreCase = true;
+            CultureInfo culture = null;
+
             if (!string.IsNullOrEmpty(Line))
             {
                 foreach (var w in _word)
                 {
-                    Line = Line.Replace(w.Key, w.Value);
-                    if (string.Equals(tempLine, Line))
-                    {
-                        NumberOfSubstitutions++;
-                        tempLine = Line;
-                    }
+                    CounterReplacedWords(w.Key, Line);
+                    Line = Line.Replace(w.Key, w.Value, ignoreCase, culture);
                 }
             }
             return Line;
         }
 
-        //метод изменяет слово на **** с параметрами
+        /// <summary>
+        /// метод замены запрещенных слов на звездочки
+        /// </summary>
+        /// <param name="line">строка</param>
+        /// <returns>измененную строку</returns>
         public string ReplacementWord(string line)
         {
-            string tempLine = line;
+            bool ignoreCase = true;
+            CultureInfo culture = null;
+
             if (!string.IsNullOrEmpty(line))
             {
                 foreach (var w in _word)
                 {
-                    line = line.Replace(w.Key, w.Value);
-                    if (string.Equals(tempLine, line))
-                    {
-                        NumberOfSubstitutions++;
-                        tempLine = line;
-                    }
+                    CounterReplacedWords(w.Key, line);
+                    line = line.Replace(w.Key, w.Value, ignoreCase, culture);
                 }
             }
             return line;
         }
 
-        //асинхронный метод изменения слова без параметра
+        /// <summary>
+        /// Метод подщитывает кол-во запрещенных слов в строке
+        /// </summary>
+        /// <param name="word">запрещенное слово</param>
+        /// <param name="line">строка</param>
+        private void CounterReplacedWords(string word, string line)
+        {
+            NumberOfSubstitutions += new Regex(word).Matches(line.ToLower()).Count;
+        }
+
+        /// <summary>
+        /// метод замены запрещенных слов на звездочки запускаемый в отдельном потоке
+        /// </summary>
+        /// <returns>измененную строку</returns>
         public async ValueTask<string> ReplacementWordAsync()
         {
             return await Task.Run(() => ReplacementWord());
         }
 
-        //асинхронный метод изменения слова c параметрами
+        /// <summary>
+        /// метод замены запрещенных слов на звездочки с параметром запускаемый в отдельном потоке
+        /// </summary>
+        /// <param name="line">строка</param>
+        /// <returns>измененную строку</returns>
         public async ValueTask<string> ReplacementWordAsync(string line)
         {
             return await Task.Run(() => ReplacementWord(line));
