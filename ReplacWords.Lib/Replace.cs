@@ -71,25 +71,20 @@ namespace ReplacWords.Lib
         {
             bool ignoreCase = true;
             CultureInfo culture = null;
-            string tempLine = Line;
 
             if (!string.IsNullOrEmpty(Line))
             {
                 foreach (var w in _word)
                 {
+                    CounterReplacedWords(w.Key, Line);
                     Line = Line.Replace(w.Key, w.Value, ignoreCase, culture);
-                    if (!tempLine.Equals(Line))
-                    {
-                        NumberOfSubstitutions++;
-                        tempLine = Line;
-                    }
                 }
             }
             return Line;
         }
 
         /// <summary>
-        /// метод замены запрещенных слов на звездочки с параметром
+        /// метод замены запрещенных слов на звездочки
         /// </summary>
         /// <param name="line">строка</param>
         /// <returns>измененную строку</returns>
@@ -118,36 +113,6 @@ namespace ReplacWords.Lib
         {
             NumberOfSubstitutions += new Regex(word).Matches(line.ToLower()).Count;
         }
-
-        /*public string ReplacementWord2(string line)
-        {
-            bool ignoreCase = true;
-            CultureInfo culture = null;
-
-            if (!string.IsNullOrEmpty(line))
-            {
-                string tempLine = "";
-                var temp = line.Split(new char[] { ' ' });
-
-                foreach (var w in _word)
-                {
-                    tempLine = "";
-
-                    for (int i = 0; i < temp.Length; i++)
-                    {
-                        if (temp[i].ToLower().Equals(w.Key.ToLower()))
-                        {
-                            temp[i] = temp[i].Replace(w.Key, w.Value, ignoreCase, culture);
-                            NumberOfSubstitutions++;
-                        }
-                        tempLine += $"{temp[i]} ";
-
-                    }
-                }
-                return tempLine;
-            }
-            return line;
-        }*/
 
         /// <summary>
         /// метод замены запрещенных слов на звездочки запускаемый в отдельном потоке
