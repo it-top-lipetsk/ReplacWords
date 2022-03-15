@@ -16,6 +16,7 @@ namespace ReplacWords.Lib
         /// словарь запрещенных слов
         /// </summary>
         private Dictionary<string, string> _word;
+      
         /// <summary>
         /// счетчик измененых слов
         /// </summary>
