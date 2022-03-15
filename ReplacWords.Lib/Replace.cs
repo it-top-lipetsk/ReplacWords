@@ -9,7 +9,7 @@ namespace ReplacWords.Lib
         public string Line { get; set; }
 
         private Dictionary<string, string> _word;
-        public int NumberOfSubstitutions { get; set; }
+        public static int NumberOfSubstitutions { get; set; }
 
         //конструктор с параметрами
         public Replace(string[] line)
