@@ -17,7 +17,7 @@ namespace ReplacWords.Lib
         public string docsPath;
         public string controlFolder;
         //for @KirillLagutin
-        List<string> ArrBannedWordFile; 
+        public static List<string> ArrBannedWordFile = new List<string>();
         public Search(string NewDocsPath) 
         {            
             forbiddenWords = new string[size];
@@ -25,7 +25,7 @@ namespace ReplacWords.Lib
             filesExtensions = new string[] { "*.txt", "*.doc", "*.docx", "*.rtf", "*.djvu", "*.pdf", "*.odt", };
             docsPath = NewDocsPath;
             controlFolder = docsPath + "/ForbiddenFiles";
-            List<string> ArrBannedWordFile = new List<string>();
+           
         }
 
         public void StartSearch()
