@@ -5,17 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
+
 namespace ReplacWords.Lib
 {
     class Search
     {
         public const int size = 10;
+        
         public string[] forbiddenWords; //массив запрещенных слов
         public static string[] filesExtensions; //список расширений файлов, которые будут проверяться
         public string docsPath;
         public string controlFolder;
-        public string[] ArrBannedWordFile; //for @KirillLagutin
-        
+        //for @KirillLagutin
+        List<string> ArrBannedWordFile; 
         public Search(string NewDocsPath) 
         {            
             forbiddenWords = new string[size];
@@ -23,6 +25,7 @@ namespace ReplacWords.Lib
             filesExtensions = new string[] { "*.txt", "*.doc", "*.docx", "*.rtf", "*.djvu", "*.pdf", "*.odt", };
             docsPath = NewDocsPath;
             controlFolder = docsPath + "/ForbiddenFiles";
+            List<string> ArrBannedWordFile = new List<string>();
         }
 
         public void StartSearch()
@@ -36,15 +39,14 @@ namespace ReplacWords.Lib
         public void SearchOneExt(string fileExt)
         {
             var Files = Directory.EnumerateFiles(docsPath, fileExt , SearchOption.AllDirectories);
-            int SizeArrBannedWordFile = 0;
+            
             foreach (string currentFile in Files)
             {
                 if(SearchingWordsInFile(currentFile))
                 {
-                    ArrBannedWordFile[SizeArrBannedWordFile] = currentFile; //полное имя файла(путь) с запрещёнными словами копируется в стринговый массив 
-                    SizeArrBannedWordFile++;
-                    string fileName = currentFile.Substring(docsPath.Length + 1);
-                    File.Copy(currentFile, Path.Combine(controlFolder, fileName));
+                    ArrBannedWordFile.Add(currentFile); //полное имя файла(путь) с запрещёнными словами копируется в стринговый массив 
+                    
+                    CopyToControlFolder(currentFile);
                 }
             }           
         }
@@ -64,6 +66,11 @@ namespace ReplacWords.Lib
             }
         }
 
+        public void CopyToControlFolder(string dangerFileFullPath)
+        {
+            string fileName = dangerFileFullPath.Substring(docsPath.Length + 1);
+            File.Copy(dangerFileFullPath, Path.Combine(controlFolder, fileName));
+        }
         //асинхронная версия метода поиска файлов с запрещёнными словами
         public async Task StartSearchAsync()
         {
