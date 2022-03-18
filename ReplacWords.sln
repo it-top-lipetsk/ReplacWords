@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReplacWords.Lib", "ReplacWo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProjectReplace", "TestProjectReplace\TestProjectReplace.csproj", "{3E6C5AF0-3392-49B4-AF9D-EF6704203F11}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplacWords.App", "ReplacWords.App\ReplacWords.App.csproj", "{5D6368D6-962A-437E-A716-93D7ADF0B72D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{3E6C5AF0-3392-49B4-AF9D-EF6704203F11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E6C5AF0-3392-49B4-AF9D-EF6704203F11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E6C5AF0-3392-49B4-AF9D-EF6704203F11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D6368D6-962A-437E-A716-93D7ADF0B72D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D6368D6-962A-437E-A716-93D7ADF0B72D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D6368D6-962A-437E-A716-93D7ADF0B72D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D6368D6-962A-437E-A716-93D7ADF0B72D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
