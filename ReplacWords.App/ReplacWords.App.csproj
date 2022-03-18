@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ReplacWords.Lib\ReplacWords.Lib.csproj" />
+        <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
     </ItemGroup>
 
 </Project>

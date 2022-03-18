@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Threading;
 
 
 namespace ReplacWords.Lib
 {
-    class Search
+    public class Search
     {
         public const int size = 10;
         
@@ -18,63 +17,65 @@ namespace ReplacWords.Lib
         public string controlFolder;
         //for @KirillLagutin
         public static List<string> ArrBannedWordFile = new List<string>();
-        public Search(string NewDocsPath) 
+        public Search(string newDocsPath) 
         {            
             forbiddenWords = new string[size];
             // плюсом не забыть добавить запрещенные слова в массив для поиска по тексту или подставить из общего
             filesExtensions = new string[] { "*.txt", "*.doc", "*.docx", "*.rtf", "*.djvu", "*.pdf", "*.odt", };
-            docsPath = NewDocsPath;
-            controlFolder = docsPath + "/ForbiddenFiles";
+            docsPath = newDocsPath;
+            controlFolder = docsPath + @"\ForbiddenFiles";
            
         }
 
-        public void StartSearch()
+        public void StartSearch(IProgress<int> progress, CancellationToken token)
         {
             for(int i = 0; i < filesExtensions.Length; i++)
             {
-                SearchOneExt(filesExtensions[i]);
+                if (token.IsCancellationRequested)
+                {
+                    token.ThrowIfCancellationRequested();
+                }
+                progress.Report(i);
+                //SearchOneExt(filesExtensions[i]);
+                Thread.Sleep(2000);
             }
         }
 
         public void SearchOneExt(string fileExt)
         {
-            var Files = Directory.EnumerateFiles(docsPath, fileExt , SearchOption.AllDirectories);
+            var files = Directory.EnumerateFiles(docsPath, fileExt , SearchOption.AllDirectories);
             
-            foreach (string currentFile in Files)
+            foreach (string currentFile in files)
             {
-                if(SearchingWordsInFile(currentFile))
-                {
-                    ArrBannedWordFile.Add(currentFile); //полное имя файла(путь) с запрещёнными словами копируется в стринговый массив 
-                    
-                    CopyToControlFolder(currentFile);
-                }
-            }           
+                if (!SearchingWordsInFile(currentFile)) continue;
+                
+                ArrBannedWordFile.Add(currentFile); //полное имя файла(путь) с запрещёнными словами копируется в стринговый массив 
+                CopyToControlFolder(currentFile);
+            }
         }
         public bool SearchingWordsInFile(string filePath)
-        {                      
-            using (StreamReader sr = new StreamReader(filePath))
+        {
+            using StreamReader sr = new StreamReader(filePath);
+            var textFromFile = sr.ReadToEnd();
+            for (int i = 0; i < size; i++)
             {
-                string textFromFile = sr.ReadToEnd();
-                for (int i = 0; i < size; i++)
+                if (textFromFile.Contains(forbiddenWords[i]))
                 {
-                    if (textFromFile.Contains(forbiddenWords[i]))
-                    {
-                        return true;
-                    }     
-                }
-                return false;
+                    return true;
+                }     
             }
+            return false;
         }
 
         public void CopyToControlFolder(string dangerFileFullPath)
         {
-            string fileName = dangerFileFullPath.Substring(docsPath.Length + 1);
+            var fileName = dangerFileFullPath[(docsPath.Length + 1)..];
             File.Copy(dangerFileFullPath, Path.Combine(controlFolder, fileName));
         }
         //асинхронная версия метода поиска файлов с запрещёнными словами
-        public async Task StartSearchAsync()
+        public async Task StartSearchAsync(IProgress<int> progress, CancellationToken token)
         {
-            await Task.Run(() => StartSearch());
+            await Task.Run(() => StartSearch(progress, token), token);
         }
     }
 }

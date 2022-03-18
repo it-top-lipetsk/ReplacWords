@@ -29,9 +29,24 @@
         <Setter Property="Width" Value="150"/>
     </Style>
     
+    <Style x:Key="Style_Button_Default" TargetType="Button"
+           BasedOn="{StaticResource Style_Default}">
+        <Setter Property="Width" Value="75"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+    <Style x:Key="Style_Button_Start" TargetType="Button"
+           BasedOn="{StaticResource Style_Button_Default}">
+        <Setter Property="Background" Value="Green"/>
+    </Style>
+    <Style x:Key="Style_Button_Stop" TargetType="Button"
+           BasedOn="{StaticResource Style_Button_Default}">
+        <Setter Property="Background" Value="Red"/>
+    </Style>
+    
     <Style x:Key="Style_ProgressBar" TargetType="ProgressBar"
            BasedOn="{StaticResource Style_Default}">
         <Setter Property="Height" Value="20"/>
+        <Setter Property="Width" Value="450"/>
     </Style>
     
 </ResourceDictionary>

@@ -26,11 +26,25 @@
                      Style="{StaticResource Style_Input_2}"/>
             <Button x:Name="Button_OpenDirectory"
                     Content="Выбрать путь ..."
-                    Style="{StaticResource Style_Button}"/>
+                    Style="{StaticResource Style_Button}"
+                    Click="Button_OpenDirectory_OnClick"/>
         </StackPanel>
         
-        <ProgressBar x:Name="ProgressBar_Process"
-                     Minimum="0" Maximum="100"
-                     Style="{StaticResource Style_ProgressBar}"/>
+        <StackPanel Orientation="Horizontal">
+            <Button x:Name="Button_Start"
+                    Content="Start"
+                    Style="{StaticResource Style_Button_Start}"
+                    Click="Button_Start_OnClick"/>
+            
+            <ProgressBar x:Name="ProgressBar_Process"
+                         Minimum="0" Maximum="100"
+                         Style="{StaticResource Style_ProgressBar}"/>
+            
+            <Button x:Name="Button_Stop"
+                    Content="Stop"
+                    Style="{StaticResource Style_Button_Stop}"
+                    IsEnabled="False"
+                    Click="Button_Stop_OnClick"/>
+        </StackPanel>
     </StackPanel>
 </Window>
